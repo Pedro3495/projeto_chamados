@@ -10,6 +10,7 @@ const viewFormularioNovoChamado = document.querySelector("#view-form-chamado");
 const viewChamados = document.querySelector("#view-chamados");
 const botaoCancelar = document.querySelector("#btn-cancelar-form");
 const formChamado = document.querySelector("#form-chamado");
+const busca = document.querySelector("#busca");
 let idEmEdicao = null;
 
 function criarCardChamado(chamado) {
@@ -141,3 +142,19 @@ botaoCancelar.addEventListener("click", () => {
   viewChamados.hidden = false;
   viewFormularioNovoChamado.hidden = true;
 })
+
+// PESQUISA
+busca.addEventListener("input", aplicarFiltros);
+
+function aplicarFiltros() {
+  const termo = busca.value.toLowerCase();
+
+  const chamadosFiltrados = chamadosAtuais.filter((chamado) => {
+    return (
+      chamado.titulo.toLowerCase().includes(termo) ||
+      chamado.clienteNome.toLowerCase().includes(termo)
+    );
+  });
+
+  renderizarChamados(chamadosFiltrados);
+}
