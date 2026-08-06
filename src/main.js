@@ -11,6 +11,7 @@ const botaoCancelar = document.querySelector("#btn-cancelar-form");
 const formChamado = document.querySelector("#form-chamado");
 const busca = document.querySelector("#busca");
 const filtroStatus = document.querySelector("#filtro-status");
+const filtroPrioridade = document.querySelector("#filtro-prioridade");
 let idEmEdicao = null;
 
 function normalizarClasse(valor) {
@@ -22,7 +23,7 @@ function normalizarClasse(valor) {
 }
 
 function criarCardChamado(chamado) {
-  const classePrioridade = chamado.prioridade.toLowerCase();
+  const classePrioridade = normalizarClasse(chamado.prioridade);
   const classeStatus = normalizarClasse(chamado.status);
 
   return `<li class="card-chamado" data-id="${chamado.id}">
@@ -154,17 +155,18 @@ busca.addEventListener("input", aplicarFiltros);
 function aplicarFiltros() {
   const termo = busca.value.toLowerCase();
   const statusSelecionado = filtroStatus.value;
+  const prioridadeSelecionada = filtroPrioridade.value;
 
   const chamadosFiltrados = chamadosAtuais.filter((chamado) => {
-    const correspondeStatus =
-      statusSelecionado === "" || chamado.status === statusSelecionado;
-    const correspondePesquisa =
-      chamado.titulo.toLowerCase().includes(termo) ||
-      chamado.clienteNome.toLowerCase().includes(termo);
-    return correspondePesquisa && correspondeStatus;
+    const correspondeStatus = statusSelecionado === "" || chamado.status === statusSelecionado;
+    const correspondePesquisa = chamado.titulo.toLowerCase().includes(termo) || chamado.clienteNome.toLowerCase().includes(termo);
+    const correspondePrioridade = prioridadeSelecionada === "" || chamado.prioridade === prioridadeSelecionada;
+    return correspondePesquisa && correspondeStatus & correspondePrioridade;
   });
   renderizarChamados(chamadosFiltrados);
 }
 
 //FILTRO STATUS
 filtroStatus.addEventListener("change", aplicarFiltros);
+
+filtroPrioridade.addEventListener("change", aplicarFiltros);

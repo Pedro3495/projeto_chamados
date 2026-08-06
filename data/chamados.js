@@ -12,7 +12,7 @@ const chamados = [
     titulo: "Navegador nao abre",
     clienteNome: "Empresa Hosp",
     prioridade: "Urgente",
-    status: "Concluido",
+    status: "Concluído",
     dataAbertura: "2026-05-21",
   },
   {
@@ -20,7 +20,7 @@ const chamados = [
     titulo: "Internet n conecta",
     clienteNome: "Empresa",
     prioridade: "Media",
-    status: "Concluido",
+    status: "Concluído",
     dataAbertura: "2026-05-11",
   },
 ];
