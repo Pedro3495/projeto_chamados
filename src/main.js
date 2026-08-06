@@ -2,20 +2,28 @@ import { chamados } from "../data/chamados.js";
 
 let chamadosAtuais = [...chamados];
 
-
 const container = document.querySelector("#lista-chamados");
-const msgVazio = document.querySelector("#msg-vazio")
+const msgVazio = document.querySelector("#msg-vazio");
 const botaoNovoChamado = document.querySelector("#btn-novo-chamado");
 const viewFormularioNovoChamado = document.querySelector("#view-form-chamado");
 const viewChamados = document.querySelector("#view-chamados");
 const botaoCancelar = document.querySelector("#btn-cancelar-form");
 const formChamado = document.querySelector("#form-chamado");
 const busca = document.querySelector("#busca");
+const filtroStatus = document.querySelector("#filtro-status");
 let idEmEdicao = null;
+
+function normalizarClasse(valor) {
+  return valor
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-");
+}
 
 function criarCardChamado(chamado) {
   const classePrioridade = chamado.prioridade.toLowerCase();
-  const classeStatus = chamado.status.toLowerCase().replace(" ", "-");
+  const classeStatus = normalizarClasse(chamado.status);
 
   return `<li class="card-chamado" data-id="${chamado.id}">
     <div class="card-chamado__topo">
@@ -38,7 +46,6 @@ function criarCardChamado(chamado) {
 
 // Para cada chamado dentro de chamados, colocar esse HTML.
 function renderizarChamados(listaDeChamados) {
-
   if (listaDeChamados.length !== 0) {
     container.hidden = false;
     msgVazio.hidden = true;
@@ -76,7 +83,7 @@ formChamado.addEventListener("submit", function (event) {
     });
   } else {
     let proximoId = 0;
-    if(chamadosAtuais.length !== 0) {
+    if (chamadosAtuais.length !== 0) {
       proximoId = Math.max(...chamadosAtuais.map((chamado) => chamado.id)) + 1;
     } else {
       proximoId = 1;
@@ -112,7 +119,6 @@ container.addEventListener("click", (event) => {
   renderizarChamados(chamadosAtuais);
 });
 
-
 // BOTÃO EDITAR
 container.addEventListener("click", (event) => {
   if (!event.target.classList.contains("btn-editar")) {
@@ -134,27 +140,31 @@ container.addEventListener("click", (event) => {
   viewFormularioNovoChamado.hidden = false;
 });
 
-
 // BOTÃO CANCELAR
 botaoCancelar.addEventListener("click", () => {
   idEmEdicao = null;
   formChamado.reset();
   viewChamados.hidden = false;
   viewFormularioNovoChamado.hidden = true;
-})
+});
 
 // PESQUISA
 busca.addEventListener("input", aplicarFiltros);
 
 function aplicarFiltros() {
   const termo = busca.value.toLowerCase();
+  const statusSelecionado = filtroStatus.value;
 
   const chamadosFiltrados = chamadosAtuais.filter((chamado) => {
-    return (
+    const correspondeStatus =
+      statusSelecionado === "" || chamado.status === statusSelecionado;
+    const correspondePesquisa =
       chamado.titulo.toLowerCase().includes(termo) ||
-      chamado.clienteNome.toLowerCase().includes(termo)
-    );
+      chamado.clienteNome.toLowerCase().includes(termo);
+    return correspondePesquisa && correspondeStatus;
   });
-
   renderizarChamados(chamadosFiltrados);
 }
+
+//FILTRO STATUS
+filtroStatus.addEventListener("change", aplicarFiltros);
