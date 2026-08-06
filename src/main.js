@@ -12,6 +12,7 @@ const formChamado = document.querySelector("#form-chamado");
 const busca = document.querySelector("#busca");
 const filtroStatus = document.querySelector("#filtro-status");
 const filtroPrioridade = document.querySelector("#filtro-prioridade");
+const filtroOrdenacao = document.querySelector("#ordenacao");
 let idEmEdicao = null;
 
 function normalizarClasse(valor) {
@@ -156,17 +157,45 @@ function aplicarFiltros() {
   const termo = busca.value.toLowerCase();
   const statusSelecionado = filtroStatus.value;
   const prioridadeSelecionada = filtroPrioridade.value;
+  const ordenacaoSelecionada = filtroOrdenacao.value;
 
   const chamadosFiltrados = chamadosAtuais.filter((chamado) => {
     const correspondeStatus = statusSelecionado === "" || chamado.status === statusSelecionado;
     const correspondePesquisa = chamado.titulo.toLowerCase().includes(termo) || chamado.clienteNome.toLowerCase().includes(termo);
     const correspondePrioridade = prioridadeSelecionada === "" || chamado.prioridade === prioridadeSelecionada;
-    return correspondePesquisa && correspondeStatus & correspondePrioridade;
+    return correspondePesquisa && correspondeStatus && correspondePrioridade;
   });
-  renderizarChamados(chamadosFiltrados);
+
+  const chamadosOrdenados = [...chamadosFiltrados];
+
+  chamadosOrdenados.sort((a, b) => {
+    const data1 = new Date(a.dataAbertura);
+    const data2 = new Date(b.dataAbertura);
+
+    if (ordenacaoSelecionada === "recentes") {
+        return data2 - data1;
+    } else if (ordenacaoSelecionada === "antigos") {
+        return data1 - data2;
+    } else if (ordenacaoSelecionada === "prioridade") {
+      const pesoPrioridade = {
+        Urgente: 4,
+        Alta: 3,
+        Media: 2,
+        Baixa: 1,
+      };
+      return pesoPrioridade[b.prioridade] - pesoPrioridade[a.prioridade];
+    }
+  });
+
+
+  renderizarChamados(chamadosOrdenados);
 }
 
-//FILTRO STATUS
+// Filtro Status
 filtroStatus.addEventListener("change", aplicarFiltros);
 
+// Filtro Prioridade
 filtroPrioridade.addEventListener("change", aplicarFiltros);
+
+// Filtro Ordenação
+filtroOrdenacao.addEventListener("change", aplicarFiltros);
