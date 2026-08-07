@@ -1,6 +1,6 @@
 import { chamados } from "../data/chamados.js";
 
-let chamadosAtuais = carregarChamados();
+let chamadosAtuais = [];
 
 const container = document.querySelector("#lista-chamados");
 const msgVazio = document.querySelector("#msg-vazio");
@@ -13,6 +13,8 @@ const busca = document.querySelector("#busca");
 const filtroStatus = document.querySelector("#filtro-status");
 const filtroPrioridade = document.querySelector("#filtro-prioridade");
 const filtroOrdenacao = document.querySelector("#ordenacao");
+const mensagemCarregando = document.querySelector("#msg-carregando");
+const mensagemErro = document.querySelector("#msg-erro")
 let idEmEdicao = null;
 
 function normalizarClasse(valor) {
@@ -58,7 +60,7 @@ function renderizarChamados(listaDeChamados) {
     container.hidden = true;
   }
 }
-renderizarChamados(chamadosAtuais);
+
 
 // BOTÃO CRIAR NOVO CHAMADO
 botaoNovoChamado.addEventListener("click", () => {
@@ -138,7 +140,6 @@ container.addEventListener("click", (event) => {
   formChamado.elements.clienteNome.value = chamado.clienteNome;
   formChamado.elements.prioridade.value = chamado.prioridade;
   formChamado.elements.status.value = chamado.status;
-  salvarChamados();
   viewChamados.hidden = true;
   viewFormularioNovoChamado.hidden = false;
 });
@@ -161,9 +162,14 @@ function aplicarFiltros() {
   const ordenacaoSelecionada = filtroOrdenacao.value;
 
   const chamadosFiltrados = chamadosAtuais.filter((chamado) => {
-    const correspondeStatus = statusSelecionado === "" || chamado.status === statusSelecionado;
-    const correspondePesquisa = chamado.titulo.toLowerCase().includes(termo) || chamado.clienteNome.toLowerCase().includes(termo);
-    const correspondePrioridade = prioridadeSelecionada === "" || chamado.prioridade === prioridadeSelecionada;
+    const correspondeStatus =
+      statusSelecionado === "" || chamado.status === statusSelecionado;
+    const correspondePesquisa =
+      chamado.titulo.toLowerCase().includes(termo) ||
+      chamado.clienteNome.toLowerCase().includes(termo);
+    const correspondePrioridade =
+      prioridadeSelecionada === "" ||
+      chamado.prioridade === prioridadeSelecionada;
     return correspondePesquisa && correspondeStatus && correspondePrioridade;
   });
 
@@ -174,9 +180,9 @@ function aplicarFiltros() {
     const data2 = new Date(b.dataAbertura);
 
     if (ordenacaoSelecionada === "recentes") {
-        return data2 - data1;
+      return data2 - data1;
     } else if (ordenacaoSelecionada === "antigos") {
-        return data1 - data2;
+      return data1 - data2;
     } else if (ordenacaoSelecionada === "prioridade") {
       const pesoPrioridade = {
         Urgente: 4,
@@ -187,7 +193,6 @@ function aplicarFiltros() {
       return pesoPrioridade[b.prioridade] - pesoPrioridade[a.prioridade];
     }
   });
-
 
   renderizarChamados(chamadosOrdenados);
 }
@@ -205,12 +210,39 @@ function salvarChamados() {
   const chamadosEmJSON = JSON.stringify(chamadosAtuais);
   localStorage.setItem("chamados", chamadosEmJSON);
 }
+
 function carregarChamados() {
   const chamadosSalvos = localStorage.getItem("chamados");
 
   if (chamadosSalvos) {
     return JSON.parse(chamadosSalvos);
-
   }
   return [...chamados];
 }
+
+function carregarChamadosAsync() {
+  return new Promise((resolve,reject) => {
+    setTimeout(() => {
+      const dados = carregarChamados();
+
+      resolve(dados);
+    }, 1000);
+  });
+}
+
+async function iniciarAplicacao() {
+  mensagemCarregando.hidden = false;
+  mensagemErro.hidden = true;
+
+  try {
+    const dados = await carregarChamadosAsync();
+    chamadosAtuais = dados;
+    renderizarChamados(chamadosAtuais);
+  } catch (error) {
+    console.log(error);
+    mensagemErro.hidden = false;
+  } finally {
+    mensagemCarregando.hidden = true;
+  }
+}
+iniciarAplicacao();
