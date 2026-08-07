@@ -43,9 +43,5 @@ Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos 
 - Loading e erros
 - Organização mínima em módulos
 - Congelar como v1-vanilla
-
-
-
-
 - Depois de abordar os tópicos em JS, partir para o JS Moderno : TypeScript, React, integrar Java e Spring Boot no projeto,PostgresSQL,integração full-stack, testes e deploy.
 - Com isso, vou ter um projeto do inicio ao fim feito na mão por mim, sem ajuda direta de IA, apenas para me guiar durante o processo.

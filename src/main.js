@@ -1,6 +1,6 @@
 import { chamados } from "../data/chamados.js";
 
-let chamadosAtuais = [...chamados];
+let chamadosAtuais = carregarChamados();
 
 const container = document.querySelector("#lista-chamados");
 const msgVazio = document.querySelector("#msg-vazio");
@@ -100,6 +100,7 @@ formChamado.addEventListener("submit", function (event) {
     chamadosAtuais = [...chamadosAtuais, novoChamado];
   }
 
+  salvarChamados();
   renderizarChamados(chamadosAtuais);
   viewChamados.hidden = false;
   viewFormularioNovoChamado.hidden = true;
@@ -117,7 +118,7 @@ container.addEventListener("click", (event) => {
   const id = Number(card.dataset.id);
 
   chamadosAtuais = chamadosAtuais.filter((chamado) => chamado.id !== id);
-
+  salvarChamados();
   renderizarChamados(chamadosAtuais);
 });
 
@@ -137,7 +138,7 @@ container.addEventListener("click", (event) => {
   formChamado.elements.clienteNome.value = chamado.clienteNome;
   formChamado.elements.prioridade.value = chamado.prioridade;
   formChamado.elements.status.value = chamado.status;
-
+  salvarChamados();
   viewChamados.hidden = true;
   viewFormularioNovoChamado.hidden = false;
 });
@@ -199,3 +200,17 @@ filtroPrioridade.addEventListener("change", aplicarFiltros);
 
 // Filtro Ordenação
 filtroOrdenacao.addEventListener("change", aplicarFiltros);
+
+function salvarChamados() {
+  const chamadosEmJSON = JSON.stringify(chamadosAtuais);
+  localStorage.setItem("chamados", chamadosEmJSON);
+}
+function carregarChamados() {
+  const chamadosSalvos = localStorage.getItem("chamados");
+
+  if (chamadosSalvos) {
+    return JSON.parse(chamadosSalvos);
+
+  }
+  return [...chamados];
+}
