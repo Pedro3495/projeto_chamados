@@ -1,5 +1,7 @@
 import { chamados } from "../data/chamados.js";
-
+import { aplicarFiltros } from "./filtos.js";
+import { salvarChamados, carregarChamadosAsync } from "./storage.js";
+import { criarCardChamado,normalizarClasse,renderizarChamados } from "./ui.js";
 let chamadosAtuais = [];
 
 const container = document.querySelector("#lista-chamados");
@@ -16,50 +18,6 @@ const filtroOrdenacao = document.querySelector("#ordenacao");
 const mensagemCarregando = document.querySelector("#msg-carregando");
 const mensagemErro = document.querySelector("#msg-erro")
 let idEmEdicao = null;
-
-function normalizarClasse(valor) {
-  return valor
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, "-");
-}
-
-function criarCardChamado(chamado) {
-  const classePrioridade = normalizarClasse(chamado.prioridade);
-  const classeStatus = normalizarClasse(chamado.status);
-
-  return `<li class="card-chamado" data-id="${chamado.id}">
-    <div class="card-chamado__topo">
-      <h3 class="card-chamado__titulo">${chamado.titulo}</h3>
-      <div class="badges">
-        <span class="badge badge--${classePrioridade}">${chamado.prioridade}</span>
-        <span class="badge badge--${classeStatus}">${chamado.status}</span>
-      </div>
-    </div>
-    <p class="card-chamado__cliente" name="clienteNome">${chamado.clienteNome}</p>
-    <div class="card-chamado__acoes">
-      <button class="btn btn--pequeno btn--fantasma btn-editar">Editar</button>
-      <button class="btn btn--pequeno btn--sucesso btn-concluir">
-        Concluir
-      </button>
-      <button class="btn btn--pequeno btn--perigo btn-excluir">Excluir</button>
-    </div>
-  </li>`;
-}
-
-// Para cada chamado dentro de chamados, colocar esse HTML.
-function renderizarChamados(listaDeChamados) {
-  if (listaDeChamados.length !== 0) {
-    container.hidden = false;
-    msgVazio.hidden = true;
-    container.innerHTML = listaDeChamados.map(criarCardChamado).join("");
-  } else {
-    container.innerHTML = "";
-    msgVazio.hidden = false;
-    container.hidden = true;
-  }
-}
 
 
 // BOTÃO CRIAR NOVO CHAMADO
@@ -102,7 +60,7 @@ formChamado.addEventListener("submit", function (event) {
     chamadosAtuais = [...chamadosAtuais, novoChamado];
   }
 
-  salvarChamados();
+  salvarChamados(chamadosAtuais);
   renderizarChamados(chamadosAtuais);
   viewChamados.hidden = false;
   viewFormularioNovoChamado.hidden = true;
@@ -120,7 +78,7 @@ container.addEventListener("click", (event) => {
   const id = Number(card.dataset.id);
 
   chamadosAtuais = chamadosAtuais.filter((chamado) => chamado.id !== id);
-  salvarChamados();
+  salvarChamados(chamadosAtuais);
   renderizarChamados(chamadosAtuais);
 });
 
@@ -151,84 +109,33 @@ botaoCancelar.addEventListener("click", () => {
   viewChamados.hidden = false;
   viewFormularioNovoChamado.hidden = true;
 });
+function atualizarLista() {
+  const termo = busca.value.toLowerCase();
+
+  const resultado = aplicarFiltros(
+    chamadosAtuais,
+    termo,
+    filtroStatus.value,
+    filtroPrioridade.value,
+    filtroOrdenacao.value,
+  );
+  renderizarChamados(resultado);
+}
 
 // PESQUISA
-busca.addEventListener("input", aplicarFiltros);
+busca.addEventListener("input", atualizarLista);
 
-function aplicarFiltros() {
-  const termo = busca.value.toLowerCase();
-  const statusSelecionado = filtroStatus.value;
-  const prioridadeSelecionada = filtroPrioridade.value;
-  const ordenacaoSelecionada = filtroOrdenacao.value;
 
-  const chamadosFiltrados = chamadosAtuais.filter((chamado) => {
-    const correspondeStatus =
-      statusSelecionado === "" || chamado.status === statusSelecionado;
-    const correspondePesquisa =
-      chamado.titulo.toLowerCase().includes(termo) ||
-      chamado.clienteNome.toLowerCase().includes(termo);
-    const correspondePrioridade =
-      prioridadeSelecionada === "" ||
-      chamado.prioridade === prioridadeSelecionada;
-    return correspondePesquisa && correspondeStatus && correspondePrioridade;
-  });
-
-  const chamadosOrdenados = [...chamadosFiltrados];
-
-  chamadosOrdenados.sort((a, b) => {
-    const data1 = new Date(a.dataAbertura);
-    const data2 = new Date(b.dataAbertura);
-
-    if (ordenacaoSelecionada === "recentes") {
-      return data2 - data1;
-    } else if (ordenacaoSelecionada === "antigos") {
-      return data1 - data2;
-    } else if (ordenacaoSelecionada === "prioridade") {
-      const pesoPrioridade = {
-        Urgente: 4,
-        Alta: 3,
-        Media: 2,
-        Baixa: 1,
-      };
-      return pesoPrioridade[b.prioridade] - pesoPrioridade[a.prioridade];
-    }
-  });
-
-  renderizarChamados(chamadosOrdenados);
-}
 
 // Filtro Status
-filtroStatus.addEventListener("change", aplicarFiltros);
+filtroStatus.addEventListener("change", atualizarLista);
 
 // Filtro Prioridade
-filtroPrioridade.addEventListener("change", aplicarFiltros);
+filtroPrioridade.addEventListener("change", atualizarLista);
 
 // Filtro Ordenação
-filtroOrdenacao.addEventListener("change", aplicarFiltros);
+filtroOrdenacao.addEventListener("change", atualizarLista);
 
-function salvarChamados() {
-  const chamadosEmJSON = JSON.stringify(chamadosAtuais);
-  localStorage.setItem("chamados", chamadosEmJSON);
-}
-
-function carregarChamados() {
-  const chamadosSalvos = localStorage.getItem("chamados");
-
-  if (chamadosSalvos) {
-    return JSON.parse(chamadosSalvos);
-  }
-  return [...chamados];
-}
-
-function carregarChamadosAsync() {
-  return new Promise((resolve,reject) => {
-    setTimeout(() => {
-      const dados = carregarChamados();
-
-      resolve(dados);
-    }, 1000);
-  });
-}
 
 async function iniciarAplicacao() {
   mensagemCarregando.hidden = false;
