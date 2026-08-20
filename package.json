@@ -1,0 +1,24 @@
+{
+  "name": "intro",
+  "version": "1.0.0",
+  "description": "Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos do básico até o avançado da área onde desejo atuar.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pedro3495/projeto_chamados.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Pedro3495/projeto_chamados/issues"
+  },
+  "homepage": "https://github.com/Pedro3495/projeto_chamados#readme",
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

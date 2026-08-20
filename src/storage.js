@@ -1,4 +1,4 @@
-import { chamados } from "../data/chamados.js";
+import { chamados } from "./data/chamados.js";
 
 export function salvarChamados(listaDeChamados) {
   const chamadosEmJSON = JSON.stringify(listaDeChamados);

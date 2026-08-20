@@ -1,3 +1,2 @@
 const chamados = [];
-
 export { chamados };

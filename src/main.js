@@ -1,7 +1,11 @@
-import { chamados } from "../data/chamados.js";
+import { chamados } from "./data/chamados.js";
 import { aplicarFiltros } from "./filtos.js";
 import { salvarChamados, carregarChamadosAsync } from "./storage.js";
-import { criarCardChamado,normalizarClasse,renderizarChamados } from "./ui.js";
+import {
+  criarCardChamado,
+  normalizarClasse,
+  renderizarChamados,
+} from "./ui.js";
 let chamadosAtuais = [];
 
 const container = document.querySelector("#lista-chamados");
@@ -16,9 +20,8 @@ const filtroStatus = document.querySelector("#filtro-status");
 const filtroPrioridade = document.querySelector("#filtro-prioridade");
 const filtroOrdenacao = document.querySelector("#ordenacao");
 const mensagemCarregando = document.querySelector("#msg-carregando");
-const mensagemErro = document.querySelector("#msg-erro")
+const mensagemErro = document.querySelector("#msg-erro");
 let idEmEdicao = null;
-
 
 // BOTÃO CRIAR NOVO CHAMADO
 botaoNovoChamado.addEventListener("click", () => {
@@ -125,8 +128,6 @@ function atualizarLista() {
 // PESQUISA
 busca.addEventListener("input", atualizarLista);
 
-
-
 // Filtro Status
 filtroStatus.addEventListener("change", atualizarLista);
 
@@ -135,7 +136,6 @@ filtroPrioridade.addEventListener("change", atualizarLista);
 
 // Filtro Ordenação
 filtroOrdenacao.addEventListener("change", atualizarLista);
-
 
 async function iniciarAplicacao() {
   mensagemCarregando.hidden = false;
