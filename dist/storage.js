@@ -13,8 +13,13 @@ export function carregarChamados() {
 export function carregarChamadosAsync() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            const dados = carregarChamados();
-            resolve(dados);
+            try {
+                const dados = carregarChamados();
+                resolve(dados);
+            }
+            catch (error) {
+                reject(error);
+            }
         }, 1000);
     });
 }

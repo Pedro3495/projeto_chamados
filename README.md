@@ -34,14 +34,17 @@ Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos 
 - Aprendi mais sobre o método sort() e como eu posso manipular um array.
 - Aprendi "change" como eventListener para listas Drop-down.
 - Estou me habituando a forma de desenvolver e pensar.
+- Uma Promise pode terminar de duas formas: resolve ou reject.
+- resolve indica sucesso, recebe o valor
+- reject indica falha e encerra a promise com falha
+- finally executa o código posto nele independente do resultado do try/catch
+- o navegador está executando a pasta dist, que é resultado da verificação do typescript, feita via npx tsc.
 
 ## Próximas etapas
 
-- Pesquisa e filtro dos chamados, ordenacão, persistência com localStorage e JSON, camada assíncrona, Loading e tratamento de erros e a organização mínima em módulos. OK
-- Persistência com localStorage e JSON.
-- Camada assíncrona simulada.
-- Loading e erros
-- Organização mínima em módulos
-- Congelar como v1-vanilla
-- Depois de abordar os tópicos em JS, partir para o JS Moderno : TypeScript, React, integrar Java e Spring Boot no projeto,PostgresSQL,integração full-stack, testes e deploy.
-- Com isso, vou ter um projeto do inicio ao fim feito na mão por mim, sem ajuda direta de IA, apenas para me guiar durante o processo.
+- Concluir a migração gradual para TypeScript.
+- Migrar os módulos restantes, um por vez.
+- Adicionar testes.
+- Evoluir para React.
+- Integrar posteriormente com Java, Spring Boot e PostgreSQL.
+- Realizar testes de integração e deploy.
