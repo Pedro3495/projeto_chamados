@@ -2,12 +2,14 @@ type Chamado = {
   clienteNome: string;
   dataAbertura: string;
   id: number;
-  prioridade: string;
-  status: string;
+  prioridade: Prioridade;
+  status: Status;
   titulo: string;
 };
 
-const chamados: Chamado[] = [
+type Prioridade = "Baixa" | "Media" | "Alta" | "Urgente";
+type Status = "Aberto" | "Em andamento" | "Aguardando cliente" | "Concluído";
 
-];
+const chamados: Chamado[] = [];
+
 export { chamados, Chamado };

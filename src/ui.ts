@@ -1,15 +1,17 @@
-const container = document.querySelector("#lista-chamados");
-const msgVazio = document.querySelector("#msg-vazio");
+import type { Chamado } from "./data/chamados.js";
 
-export function normalizarClasse(valor) {
+const container = document.querySelector<HTMLUListElement>("#lista-chamados");
+const msgVazio = document.querySelector<HTMLParagraphElement>("#msg-vazio");
+
+export function normalizarClasse(valor: string) {
   return valor
     .toLowerCase()
-    .normalize("NFD") 
+    .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/\s+/g, "-");
 }
 
-export function criarCardChamado(chamado) {
+export function criarCardChamado(chamado: Chamado) {
   const classePrioridade = normalizarClasse(chamado.prioridade);
   const classeStatus = normalizarClasse(chamado.status);
 
@@ -33,7 +35,10 @@ export function criarCardChamado(chamado) {
 }
 
 // Para cada chamado dentro de chamados, colocar esse HTML.
-export function renderizarChamados(listaDeChamados) {
+export function renderizarChamados(listaDeChamados: Chamado[]) {
+  if (!container || !msgVazio) {
+    throw new Error("Elementos essenciais da interface não foram encontrados.");
+  }
   if (listaDeChamados.length !== 0) {
     container.hidden = false;
     msgVazio.hidden = true;

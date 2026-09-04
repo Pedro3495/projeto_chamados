@@ -30,6 +30,9 @@ export function criarCardChamado(chamado) {
 }
 // Para cada chamado dentro de chamados, colocar esse HTML.
 export function renderizarChamados(listaDeChamados) {
+    if (!container || !msgVazio) {
+        throw new Error("Elementos essenciais da interface não foram encontrados.");
+    }
     if (listaDeChamados.length !== 0) {
         container.hidden = false;
         msgVazio.hidden = true;
