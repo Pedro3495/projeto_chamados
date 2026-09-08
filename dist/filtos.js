@@ -3,14 +3,13 @@ export function aplicarFiltros(lista, termo, status, prioridade, ordenacao) {
         const correspondeStatus = status === "" || chamado.status === status;
         const correspondePesquisa = chamado.titulo.toLowerCase().includes(termo) ||
             chamado.clienteNome.toLowerCase().includes(termo);
-        const correspondePrioridade = prioridade === "" ||
-            chamado.prioridade === prioridade;
+        const correspondePrioridade = prioridade === "" || chamado.prioridade === prioridade;
         return correspondePesquisa && correspondeStatus && correspondePrioridade;
     });
     const chamadosOrdenados = [...chamadosFiltrados];
     chamadosOrdenados.sort((a, b) => {
-        const data1 = new Date(a.dataAbertura);
-        const data2 = new Date(b.dataAbertura);
+        const data1 = new Date(a.dataAbertura).getTime();
+        const data2 = new Date(b.dataAbertura).getTime();
         if (ordenacao === "recentes") {
             return data2 - data1;
         }
@@ -23,9 +22,10 @@ export function aplicarFiltros(lista, termo, status, prioridade, ordenacao) {
                 Alta: 3,
                 Media: 2,
                 Baixa: 1,
+                "": 0,
             };
             return pesoPrioridade[b.prioridade] - pesoPrioridade[a.prioridade];
         }
+        return 0;
     });
-    return chamadosOrdenados;
 }
