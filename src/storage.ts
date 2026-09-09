@@ -1,11 +1,12 @@
 import { chamados } from "./data/chamados.js";
+import type { Chamado } from "./data/chamados.js";
 
-export function salvarChamados(listaDeChamados) {
+export function salvarChamados(listaDeChamados: Chamado[]) {
   const chamadosEmJSON = JSON.stringify(listaDeChamados);
   localStorage.setItem("chamados", chamadosEmJSON);
 }
 
-export function carregarChamados() {
+export function carregarChamados(): Chamado[] {
   const chamadosSalvos = localStorage.getItem("chamados");
 
   if (chamadosSalvos) {
@@ -14,8 +15,8 @@ export function carregarChamados() {
   return [...chamados];
 }
 
-export function carregarChamadosAsync() {
-  return new Promise((resolve, reject) => {
+export function carregarChamadosAsync(): Promise<Chamado[]>{
+  return new Promise<Chamado[]>((resolve, reject) => {
     setTimeout(() => {
       try {
         const dados = carregarChamados();
