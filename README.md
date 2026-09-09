@@ -40,7 +40,8 @@ Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos 
 - finally executa o código posto nele independente do resultado do try/catch
 - o navegador está executando a pasta dist, que é resultado da verificação do typescript, feita via npx tsc.
 - O parâmetro Ordenacao, Prioridade e Status foi tipado.
-
+- Migrei storage.js para storage.ts e fiz a tipagem necessária
+- A ideia de tipar uma promise é essa: Promise<Chamado[]> -> Quando resolver, entregará um array de chamados.
 ## Próximas etapas
 
 - Concluir a migração gradual para TypeScript.
