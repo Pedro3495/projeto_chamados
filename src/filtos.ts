@@ -5,10 +5,10 @@ type Ordenacao = "recentes" | "antigos" | "prioridade";
 export function aplicarFiltros(
   lista: Chamado[],
   termo: string,
-  status: Status,
-  prioridade: Prioridade,
+  status: Status | "",
+  prioridade: Prioridade | "",
   ordenacao: Ordenacao,
-) {
+): Chamado[] {
   const chamadosFiltrados = lista.filter((chamado) => {
     const correspondeStatus = status === "" || chamado.status === status;
     const correspondePesquisa =
@@ -35,12 +35,12 @@ export function aplicarFiltros(
         Alta: 3,
         Media: 2,
         Baixa: 1,
-        "": 0,
       };
       return pesoPrioridade[b.prioridade] - pesoPrioridade[a.prioridade];
     }
     return 0;
   });
+  return chamadosOrdenados;
 }
 
 

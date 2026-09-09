@@ -7,8 +7,8 @@ type Chamado = {
   titulo: string;
 };
 
-type Prioridade = "Baixa" | "Media" | "Alta" | "Urgente" | "";
-type Status = "Aberto" | "Em andamento" | "Aguardando cliente" | "Concluído" | "";
+type Prioridade = "Baixa" | "Media" | "Alta" | "Urgente";
+type Status = "Aberto" | "Em andamento" | "Aguardando cliente" | "Concluído";
 
 const chamados: Chamado[] = [];
 

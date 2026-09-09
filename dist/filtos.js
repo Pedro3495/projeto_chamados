@@ -22,10 +22,10 @@ export function aplicarFiltros(lista, termo, status, prioridade, ordenacao) {
                 Alta: 3,
                 Media: 2,
                 Baixa: 1,
-                "": 0,
             };
             return pesoPrioridade[b.prioridade] - pesoPrioridade[a.prioridade];
         }
         return 0;
     });
+    return chamadosOrdenados;
 }
