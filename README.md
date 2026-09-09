@@ -9,6 +9,7 @@ Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos 
 - HTML
 - CSS
 - JavaScript
+- TypeScript
 - Módulos ESM
 
 ## Funcionalidades concluídas
@@ -20,6 +21,22 @@ Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos 
 - Filtros combinados.
 - Normalização de classes CSS.
 - Ordenação por mais recentes, mais antigos e prioridades.
+- Persistência dos chamados com `localStorage` e JSON.
+- Carregamento assíncrono simulado, com estados de loading e erro.
+- Organização do código em módulos.
+- Migração dos módulos de `src` para TypeScript.
+
+## Comandos do projeto
+
+```bash
+npm run typecheck
+npm run build
+npm run watch
+```
+
+- `typecheck`: verifica os tipos sem gerar arquivos em `dist`.
+- `build`: verifica os tipos e compila o TypeScript para JavaScript em `dist`.
+- `watch`: mantém o compilador ativo e recompila após alterações salvas.
 
 ## Aprendizados
 
@@ -45,10 +62,12 @@ Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos 
 - Migrei main.js para main.ts
 - Tipei várias variáveis, elementos DOM e até resultados de find()
 - Criei várias verificações: null, verificar tipos.
+- Configurei `noUnusedLocals` e `noUnusedParameters` para encontrar código não utilizado.
+- Configurei `noEmitOnError` para impedir a geração de JavaScript quando houver erros de TypeScript.
+
 ## Próximas etapas
 
-- Concluir a migração gradual para TypeScript.
-- Migrar os módulos restantes, um por vez.
+- Validar em tempo de execução os dados recuperados do `localStorage`.
 - Adicionar testes.
 - Evoluir para React.
 - Integrar posteriormente com Java, Spring Boot e PostgreSQL.

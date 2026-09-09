@@ -4,7 +4,9 @@
   "description": "Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos do básico até o avançado da área onde desejo atuar.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "watch": "tsc --watch"
   },
   "repository": {
     "type": "git",
