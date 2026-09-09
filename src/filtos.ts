@@ -1,21 +1,29 @@
-export function aplicarFiltros(lista,termo,status,prioridade,ordenacao) {
+import type { Chamado, Status, Prioridade } from "./data/chamados";
+
+type Ordenacao = "recentes" | "antigos" | "prioridade";
+
+export function aplicarFiltros(
+  lista: Chamado[],
+  termo: string,
+  status: Status | "",
+  prioridade: Prioridade | "",
+  ordenacao: Ordenacao,
+): Chamado[] {
   const chamadosFiltrados = lista.filter((chamado) => {
-    const correspondeStatus =
-      status === "" || chamado.status === status;
+    const correspondeStatus = status === "" || chamado.status === status;
     const correspondePesquisa =
       chamado.titulo.toLowerCase().includes(termo) ||
       chamado.clienteNome.toLowerCase().includes(termo);
     const correspondePrioridade =
-      prioridade === "" ||
-      chamado.prioridade === prioridade;
+      prioridade === "" || chamado.prioridade === prioridade;
     return correspondePesquisa && correspondeStatus && correspondePrioridade;
   });
 
   const chamadosOrdenados = [...chamadosFiltrados];
 
-  chamadosOrdenados.sort((a, b) => {
-    const data1 = new Date(a.dataAbertura);
-    const data2 = new Date(b.dataAbertura);
+  chamadosOrdenados.sort((a: Chamado, b: Chamado) => {
+    const data1 = new Date(a.dataAbertura).getTime();
+    const data2 = new Date(b.dataAbertura).getTime();
 
     if (ordenacao === "recentes") {
       return data2 - data1;
@@ -30,7 +38,9 @@ export function aplicarFiltros(lista,termo,status,prioridade,ordenacao) {
       };
       return pesoPrioridade[b.prioridade] - pesoPrioridade[a.prioridade];
     }
+    return 0;
   });
-
-  return chamadosOrdenados
+  return chamadosOrdenados;
 }
+
+

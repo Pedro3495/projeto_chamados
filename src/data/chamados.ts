@@ -12,4 +12,4 @@ type Status = "Aberto" | "Em andamento" | "Aguardando cliente" | "Concluído";
 
 const chamados: Chamado[] = [];
 
-export { chamados, Chamado };
+export { chamados, Chamado, Status, Prioridade };

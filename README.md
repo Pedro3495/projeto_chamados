@@ -39,6 +39,7 @@ Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos 
 - reject indica falha e encerra a promise com falha
 - finally executa o código posto nele independente do resultado do try/catch
 - o navegador está executando a pasta dist, que é resultado da verificação do typescript, feita via npx tsc.
+- O parâmetro Ordenacao, Prioridade e Status foi tipado.
 
 ## Próximas etapas
 
