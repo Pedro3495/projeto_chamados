@@ -1,6 +1,6 @@
-import type { Chamado, Status, Prioridade } from "./data/chamados";
+import type { Chamado, Prioridade, Status } from "./data/chamados.js";
 
-type Ordenacao = "recentes" | "antigos" | "prioridade";
+export type Ordenacao = "recentes" | "antigos" | "prioridade";
 
 export function aplicarFiltros(
   lista: Chamado[],
@@ -40,7 +40,6 @@ export function aplicarFiltros(
     }
     return 0;
   });
+
   return chamadosOrdenados;
 }
-
-

@@ -1,10 +1,9 @@
-import { chamados } from "./data/chamados.js";
 import { aplicarFiltros } from "./filtos.js";
-import { salvarChamados, carregarChamadosAsync } from "./storage.js";
-import { criarCardChamado, normalizarClasse, renderizarChamados, } from "./ui.js";
+import { carregarChamadosAsync, salvarChamados } from "./storage.js";
+import { renderizarChamados } from "./ui.js";
 let chamadosAtuais = [];
+let idEmEdicao = null;
 const container = document.querySelector("#lista-chamados");
-const msgVazio = document.querySelector("#msg-vazio");
 const botaoNovoChamado = document.querySelector("#btn-novo-chamado");
 const viewFormularioNovoChamado = document.querySelector("#view-form-chamado");
 const viewChamados = document.querySelector("#view-chamados");
@@ -16,7 +15,29 @@ const filtroPrioridade = document.querySelector("#filtro-prioridade");
 const filtroOrdenacao = document.querySelector("#ordenacao");
 const mensagemCarregando = document.querySelector("#msg-carregando");
 const mensagemErro = document.querySelector("#msg-erro");
-let idEmEdicao = null;
+if (!botaoNovoChamado ||
+    !viewChamados ||
+    !viewFormularioNovoChamado ||
+    !formChamado ||
+    !container ||
+    !botaoCancelar) {
+    throw new Error("Elementos essenciais da interface não foram encontrados.");
+}
+function ehPrioridade(valor) {
+    return (valor === "Baixa" ||
+        valor === "Media" ||
+        valor === "Alta" ||
+        valor === "Urgente");
+}
+function ehStatus(valor) {
+    return (valor === "Aberto" ||
+        valor === "Em andamento" ||
+        valor === "Aguardando cliente" ||
+        valor === "Concluído");
+}
+function ehOrdenacao(valor) {
+    return valor === "recentes" || valor === "antigos" || valor === "prioridade";
+}
 // BOTÃO CRIAR NOVO CHAMADO
 botaoNovoChamado.addEventListener("click", () => {
     viewChamados.hidden = true;
@@ -27,7 +48,29 @@ botaoNovoChamado.addEventListener("click", () => {
 // BOTÃO ENVIAR FORM: EDIÇÃO/NOVO
 formChamado.addEventListener("submit", function (event) {
     event.preventDefault();
-    const dadosForm = Object.fromEntries(new FormData(formChamado));
+    const formData = new FormData(formChamado);
+    const titulo = formData.get("titulo");
+    const clienteNome = formData.get("clienteNome");
+    const prioridade = formData.get("prioridade");
+    const status = formData.get("status");
+    if (typeof titulo !== "string" ||
+        typeof clienteNome !== "string" ||
+        typeof prioridade !== "string" ||
+        typeof status !== "string") {
+        throw new Error("Dados do formulário inválidos.");
+    }
+    if (!ehPrioridade(prioridade)) {
+        throw new Error("Prioridade inválida.");
+    }
+    if (!ehStatus(status)) {
+        throw new Error("Status inválido.");
+    }
+    const dadosForm = {
+        titulo,
+        clienteNome,
+        prioridade,
+        status,
+    };
     if (idEmEdicao !== null) {
         chamadosAtuais = chamadosAtuais.map((chamado) => {
             if (chamado.id === idEmEdicao) {
@@ -63,10 +106,17 @@ formChamado.addEventListener("submit", function (event) {
 });
 // BOTÃO EXCLUIR
 container.addEventListener("click", (event) => {
-    if (!event.target.classList.contains("btn-excluir")) {
+    const alvo = event.target;
+    if (!(alvo instanceof Element)) {
         return;
     }
-    const card = event.target.closest(".card-chamado");
+    if (!alvo.classList.contains("btn-excluir")) {
+        return;
+    }
+    const card = alvo.closest(".card-chamado");
+    if (!(card instanceof HTMLElement)) {
+        return;
+    }
     const id = Number(card.dataset.id);
     chamadosAtuais = chamadosAtuais.filter((chamado) => chamado.id !== id);
     salvarChamados(chamadosAtuais);
@@ -74,17 +124,37 @@ container.addEventListener("click", (event) => {
 });
 // BOTÃO EDITAR
 container.addEventListener("click", (event) => {
-    if (!event.target.classList.contains("btn-editar")) {
+    const alvo = event.target;
+    if (!(alvo instanceof Element)) {
         return;
     }
-    const card = event.target.closest(".card-chamado");
+    if (!alvo.classList.contains("btn-editar")) {
+        return;
+    }
+    const card = alvo.closest(".card-chamado");
+    if (!(card instanceof HTMLElement)) {
+        return;
+    }
     const id = Number(card.dataset.id);
     const chamado = chamadosAtuais.find((chamado) => chamado.id === id);
+    if (!chamado) {
+        return;
+    }
     idEmEdicao = chamado.id;
-    formChamado.elements.titulo.value = chamado.titulo;
-    formChamado.elements.clienteNome.value = chamado.clienteNome;
-    formChamado.elements.prioridade.value = chamado.prioridade;
-    formChamado.elements.status.value = chamado.status;
+    const campoTitulo = formChamado.elements.namedItem("titulo");
+    const campoCliente = formChamado.elements.namedItem("clienteNome");
+    const campoPrioridade = formChamado.elements.namedItem("prioridade");
+    const campoStatus = formChamado.elements.namedItem("status");
+    if (!(campoTitulo instanceof HTMLInputElement) ||
+        !(campoCliente instanceof HTMLInputElement) ||
+        !(campoPrioridade instanceof HTMLSelectElement) ||
+        !(campoStatus instanceof HTMLSelectElement)) {
+        throw new Error("Campos do formulário não foram encontrados.");
+    }
+    campoTitulo.value = chamado.titulo;
+    campoCliente.value = chamado.clienteNome;
+    campoPrioridade.value = chamado.prioridade;
+    campoStatus.value = chamado.status;
     viewChamados.hidden = true;
     viewFormularioNovoChamado.hidden = false;
 });
@@ -96,9 +166,27 @@ botaoCancelar.addEventListener("click", () => {
     viewFormularioNovoChamado.hidden = true;
 });
 function atualizarLista() {
+    if (!filtroStatus || !filtroPrioridade || !filtroOrdenacao || !busca) {
+        return;
+    }
     const termo = busca.value.toLowerCase();
-    const resultado = aplicarFiltros(chamadosAtuais, termo, filtroStatus.value, filtroPrioridade.value, filtroOrdenacao.value);
+    const statusSelecionado = filtroStatus.value;
+    const prioridadeSelecionada = filtroPrioridade.value;
+    const ordenacaoSelecionada = filtroOrdenacao.value;
+    if (statusSelecionado !== "" && !ehStatus(statusSelecionado)) {
+        throw new Error("Filtro de status inválido.");
+    }
+    if (prioridadeSelecionada !== "" && !ehPrioridade(prioridadeSelecionada)) {
+        throw new Error("Filtro de prioridade inválido.");
+    }
+    if (!ehOrdenacao(ordenacaoSelecionada)) {
+        throw new Error("Ordenação inválida.");
+    }
+    const resultado = aplicarFiltros(chamadosAtuais, termo, statusSelecionado, prioridadeSelecionada, ordenacaoSelecionada);
     renderizarChamados(resultado);
+}
+if (!busca || !filtroStatus || !filtroPrioridade || !filtroOrdenacao) {
+    throw new Error("Controles de pesquisa e filtros não foram encontrados.");
 }
 // PESQUISA
 busca.addEventListener("input", atualizarLista);
@@ -109,6 +197,9 @@ filtroPrioridade.addEventListener("change", atualizarLista);
 // Filtro Ordenação
 filtroOrdenacao.addEventListener("change", atualizarLista);
 async function iniciarAplicacao() {
+    if (!mensagemCarregando || !mensagemErro) {
+        return;
+    }
     mensagemCarregando.hidden = false;
     mensagemErro.hidden = true;
     try {

@@ -42,6 +42,9 @@ Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos 
 - O parâmetro Ordenacao, Prioridade e Status foi tipado.
 - Migrei storage.js para storage.ts e fiz a tipagem necessária
 - A ideia de tipar uma promise é essa: Promise<Chamado[]> -> Quando resolver, entregará um array de chamados.
+- Migrei main.js para main.ts
+- Tipei várias variáveis, elementos DOM e até resultados de find()
+- Criei várias verificações: null, verificar tipos.
 ## Próximas etapas
 
 - Concluir a migração gradual para TypeScript.
