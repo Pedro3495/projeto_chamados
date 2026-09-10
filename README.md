@@ -62,8 +62,13 @@ npm run watch
 - Migrei main.js para main.ts
 - Tipei várias variáveis, elementos DOM e até resultados de find()
 - Criei várias verificações: null, verificar tipos.
+
 - Configurei `noUnusedLocals` e `noUnusedParameters` para encontrar código não utilizado.
 - Configurei `noEmitOnError` para impedir a geração de JavaScript quando houver erros de TypeScript.
+- `type` desaparece na compilação;
+- dados externos precisam de validação em execução;
+- unknown obriga o código a verificar antes de usar;
+- um type guard associa a verificação real ao tipo TypeScript.
 
 ## Próximas etapas
 

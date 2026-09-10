@@ -1,8 +1,9 @@
-import { aplicarFiltros } from "./filtos.js";
+import { aplicarFiltros } from "./filtros.js";
+import { ehPrioridade, ehStatus } from "./data/chamados.js";
 import { carregarChamadosAsync, salvarChamados } from "./storage.js";
 import { renderizarChamados } from "./ui.js";
-import type { Chamado, Prioridade, Status } from "./data/chamados.js";
-import type { Ordenacao } from "./filtos.js";
+import type { Chamado } from "./data/chamados.js";
+import type { Ordenacao } from "./filtros.js";
 
 let chamadosAtuais: Chamado[] = [];
 let idEmEdicao: number | null = null;
@@ -35,24 +36,6 @@ if (
   !botaoCancelar
 ) {
   throw new Error("Elementos essenciais da interface não foram encontrados.");
-}
-
-function ehPrioridade(valor: string): valor is Prioridade {
-  return (
-    valor === "Baixa" ||
-    valor === "Media" ||
-    valor === "Alta" ||
-    valor === "Urgente"
-  );
-}
-
-function ehStatus(valor: string): valor is Status {
-  return (
-    valor === "Aberto" ||
-    valor === "Em andamento" ||
-    valor === "Aguardando cliente" ||
-    valor === "Concluído"
-  );
 }
 
 function ehOrdenacao(valor: string): valor is Ordenacao {

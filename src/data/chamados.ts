@@ -12,4 +12,23 @@ type Status = "Aberto" | "Em andamento" | "Aguardando cliente" | "Concluído";
 
 const chamados: Chamado[] = [];
 
-export { chamados, Chamado, Status, Prioridade };
+function ehPrioridade(valor: string): valor is Prioridade {
+  return (
+    valor === "Baixa" ||
+    valor === "Media" ||
+    valor === "Alta" ||
+    valor === "Urgente"
+  );
+}
+
+function ehStatus(valor: string): valor is Status {
+  return (
+    valor === "Aberto" ||
+    valor === "Em andamento" ||
+    valor === "Aguardando cliente" ||
+    valor === "Concluído"
+  );
+}
+
+export { chamados, ehPrioridade, ehStatus };
+export type { Chamado, Prioridade, Status };
