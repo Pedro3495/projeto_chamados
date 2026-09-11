@@ -1,5 +1,6 @@
 import { aplicarFiltros } from "./filtros.js";
 import { ehPrioridade, ehStatus } from "./data/chamados.js";
+import { atualizarChamado, criarChamado, excluirChamado, } from "./regrasChamados.js";
 import { carregarChamadosAsync, salvarChamados } from "./storage.js";
 import { renderizarChamados } from "./ui.js";
 let chamadosAtuais = [];
@@ -61,30 +62,10 @@ formChamado.addEventListener("submit", function (event) {
         status,
     };
     if (idEmEdicao !== null) {
-        chamadosAtuais = chamadosAtuais.map((chamado) => {
-            if (chamado.id === idEmEdicao) {
-                return {
-                    ...chamado,
-                    ...dadosForm,
-                };
-            }
-            return chamado;
-        });
+        chamadosAtuais = atualizarChamado(chamadosAtuais, idEmEdicao, dadosForm);
     }
     else {
-        let proximoId = 0;
-        if (chamadosAtuais.length !== 0) {
-            proximoId = Math.max(...chamadosAtuais.map((chamado) => chamado.id)) + 1;
-        }
-        else {
-            proximoId = 1;
-        }
-        const novoChamado = {
-            ...dadosForm,
-            id: proximoId,
-            dataAbertura: new Date().toISOString().slice(0, 10),
-        };
-        chamadosAtuais = [...chamadosAtuais, novoChamado];
+        chamadosAtuais = criarChamado(chamadosAtuais, dadosForm, new Date().toISOString().slice(0, 10));
     }
     salvarChamados(chamadosAtuais);
     renderizarChamados(chamadosAtuais);
@@ -107,7 +88,7 @@ container.addEventListener("click", (event) => {
         return;
     }
     const id = Number(card.dataset.id);
-    chamadosAtuais = chamadosAtuais.filter((chamado) => chamado.id !== id);
+    chamadosAtuais = excluirChamado(chamadosAtuais, id);
     salvarChamados(chamadosAtuais);
     renderizarChamados(chamadosAtuais);
 });
