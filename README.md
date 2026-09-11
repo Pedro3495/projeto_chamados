@@ -74,10 +74,14 @@ npm run watch
 - mocks permitem substituir dependências externas, como o `localStorage`;
 - `resolves` e `rejects` verificam os caminhos de sucesso e falha de uma Promise;
 - fake timers permitem testar `setTimeout` sem esperar o tempo real.
+- as regras de negócio foram retiradas do `main.ts` e colocadas em um módulo próprio;
+- funções puras recebem dados e retornam novos valores sem depender da interface;
+- `Omit` cria um tipo a partir de outro, removendo propriedades específicas;
+- `map`, `filter` e spread permitem atualizar dados sem alterar o array original;
+- regras isoladas são mais fáceis de testar e poderão ser reutilizadas no React.
 
 ## Próximas etapas
 
-- Separar as regras de negócio do `main.ts`.
 - Evoluir para React.
 - Integrar posteriormente com Java, Spring Boot e PostgreSQL.
 - Realizar testes de integração e deploy.
