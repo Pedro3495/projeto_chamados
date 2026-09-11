@@ -69,11 +69,15 @@ npm run watch
 - dados externos precisam de validação em execução;
 - unknown obriga o código a verificar antes de usar;
 - um type guard associa a verificação real ao tipo TypeScript.
+- testes unitários verificam comportamentos isolados com entradas e resultados esperados;
+- `describe` agrupa testes, `it` descreve um comportamento e `expect` verifica o resultado;
+- mocks permitem substituir dependências externas, como o `localStorage`;
+- `resolves` e `rejects` verificam os caminhos de sucesso e falha de uma Promise;
+- fake timers permitem testar `setTimeout` sem esperar o tempo real.
 
 ## Próximas etapas
 
-- Validar em tempo de execução os dados recuperados do `localStorage`.
-- Adicionar testes.
+- Separar as regras de negócio do `main.ts`.
 - Evoluir para React.
 - Integrar posteriormente com Java, Spring Boot e PostgreSQL.
 - Realizar testes de integração e deploy.

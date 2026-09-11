@@ -8,5 +8,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noEmitOnError": true
-  }
+  },
+  "exclude": ["src/**/*.test.ts"]
 }

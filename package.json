@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,7 @@
   },
   "homepage": "https://github.com/Pedro3495/projeto_chamados#readme",
   "devDependencies": {
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.0"
   }
 }
