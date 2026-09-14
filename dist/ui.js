@@ -21,9 +21,6 @@ export function criarCardChamado(chamado) {
     <p class="card-chamado__cliente" name="clienteNome">${chamado.clienteNome}</p>
     <div class="card-chamado__acoes">
       <button class="btn btn--pequeno btn--fantasma btn-editar">Editar</button>
-      <button class="btn btn--pequeno btn--sucesso btn-concluir">
-        Concluir
-      </button>
       <button class="btn btn--pequeno btn--perigo btn-excluir">Excluir</button>
     </div>
   </li>`;

@@ -100,7 +100,7 @@ formChamado.addEventListener("submit", function (event) {
   }
 
   salvarChamados(chamadosAtuais);
-  renderizarChamados(chamadosAtuais);
+  atualizarLista();
   viewChamados.hidden = false;
   viewFormularioNovoChamado.hidden = true;
   formChamado.reset();
@@ -128,7 +128,7 @@ container.addEventListener("click", (event) => {
 
   chamadosAtuais = excluirChamado(chamadosAtuais, id);
   salvarChamados(chamadosAtuais);
-  renderizarChamados(chamadosAtuais);
+  atualizarLista();
 });
 
 // BOTÃO EDITAR

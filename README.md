@@ -11,6 +11,7 @@ Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos 
 - JavaScript
 - TypeScript
 - Módulos ESM
+- Vitest
 
 ## Funcionalidades concluídas
 
@@ -25,6 +26,10 @@ Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos 
 - Carregamento assíncrono simulado, com estados de loading e erro.
 - Organização do código em módulos.
 - Migração dos módulos de `src` para TypeScript.
+- Regras de negócio isoladas em funções puras.
+- Busca, filtros e ordenação reaplicados após criar, editar ou excluir chamados.
+- Remoção do botão Concluir sem comportamento; o status continua disponível na edição.
+- 27 testes unitários de validadores, filtros, armazenamento e regras de negócio.
 
 ## Comandos do projeto
 
@@ -32,11 +37,15 @@ Estou desenvolvendo esse projeto com objetivo de aprender na prática conceitos 
 npm run typecheck
 npm run build
 npm run watch
+npm test
+npm run test:run
 ```
 
-- `typecheck`: verifica os tipos sem gerar arquivos em `dist`.
-- `build`: verifica os tipos e compila o TypeScript para JavaScript em `dist`.
+- `typecheck`: verifica os tipos da aplicação e dos testes usando `tsconfig.typecheck.json`, sem gerar JavaScript.
+- `build`: usa `tsconfig.json` para verificar e compilar a aplicação em `dist`, excluindo os arquivos de teste.
 - `watch`: mantém o compilador ativo e recompila após alterações salvas.
+- `test`: executa o Vitest em modo de observação.
+- `test:run`: executa a suíte de testes uma vez.
 
 ## Aprendizados
 
@@ -79,9 +88,12 @@ npm run watch
 - `Omit` cria um tipo a partir de outro, removendo propriedades específicas;
 - `map`, `filter` e spread permitem atualizar dados sem alterar o array original;
 - regras isoladas são mais fáceis de testar e poderão ser reutilizadas no React.
+- `extends` permite reaproveitar uma configuração TypeScript; `exclude: []` substitui a exclusão herdada dos testes e `noEmit` impede gerar JavaScript.
+- Após alterar os chamados, a interface precisa reaplicar busca, filtros e ordenação antes de renderizar a lista.
 
 ## Próximas etapas
 
+- Concluir a revisão final da versão vanilla/TypeScript, integrar o PR e criar a tag `v1-vanilla`.
 - Evoluir para React.
 - Integrar posteriormente com Java, Spring Boot e PostgreSQL.
 - Realizar testes de integração e deploy.

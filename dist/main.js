@@ -68,7 +68,7 @@ formChamado.addEventListener("submit", function (event) {
         chamadosAtuais = criarChamado(chamadosAtuais, dadosForm, new Date().toISOString().slice(0, 10));
     }
     salvarChamados(chamadosAtuais);
-    renderizarChamados(chamadosAtuais);
+    atualizarLista();
     viewChamados.hidden = false;
     viewFormularioNovoChamado.hidden = true;
     formChamado.reset();
@@ -90,7 +90,7 @@ container.addEventListener("click", (event) => {
     const id = Number(card.dataset.id);
     chamadosAtuais = excluirChamado(chamadosAtuais, id);
     salvarChamados(chamadosAtuais);
-    renderizarChamados(chamadosAtuais);
+    atualizarLista();
 });
 // BOTÃO EDITAR
 container.addEventListener("click", (event) => {
