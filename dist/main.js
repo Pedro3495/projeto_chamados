@@ -175,7 +175,7 @@ async function iniciarAplicacao() {
     try {
         const dados = await carregarChamadosAsync();
         chamadosAtuais = dados;
-        renderizarChamados(chamadosAtuais);
+        atualizarLista();
     }
     catch (error) {
         console.log(error);

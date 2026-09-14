@@ -10,20 +10,39 @@ export function normalizarClasse(valor) {
 export function criarCardChamado(chamado) {
     const classePrioridade = normalizarClasse(chamado.prioridade);
     const classeStatus = normalizarClasse(chamado.status);
-    return `<li class="card-chamado" data-id="${chamado.id}">
-    <div class="card-chamado__topo">
-      <h3 class="card-chamado__titulo">${chamado.titulo}</h3>
-      <div class="badges">
-        <span class="badge badge--${classePrioridade}">${chamado.prioridade}</span>
-        <span class="badge badge--${classeStatus}">${chamado.status}</span>
-      </div>
-    </div>
-    <p class="card-chamado__cliente" name="clienteNome">${chamado.clienteNome}</p>
-    <div class="card-chamado__acoes">
-      <button class="btn btn--pequeno btn--fantasma btn-editar">Editar</button>
-      <button class="btn btn--pequeno btn--perigo btn-excluir">Excluir</button>
-    </div>
-  </li>`;
+    const card = document.createElement("li");
+    card.className = "card-chamado";
+    card.dataset.id = String(chamado.id);
+    const topo = document.createElement("div");
+    topo.className = "card-chamado__topo";
+    const titulo = document.createElement("h3");
+    titulo.className = "card-chamado__titulo";
+    titulo.textContent = chamado.titulo;
+    const badges = document.createElement("div");
+    badges.className = "badges";
+    const badgePrioridade = document.createElement("span");
+    badgePrioridade.className = `badge badge--${classePrioridade}`;
+    badgePrioridade.textContent = chamado.prioridade;
+    const badgeStatus = document.createElement("span");
+    badgeStatus.className = `badge badge--${classeStatus}`;
+    badgeStatus.textContent = chamado.status;
+    badges.append(badgePrioridade, badgeStatus);
+    topo.append(titulo, badges);
+    const cliente = document.createElement("p");
+    cliente.className = "card-chamado__cliente";
+    cliente.setAttribute("name", "clienteNome");
+    cliente.textContent = chamado.clienteNome;
+    const acoes = document.createElement("div");
+    acoes.className = "card-chamado__acoes";
+    const botaoEditar = document.createElement("button");
+    botaoEditar.className = "btn btn--pequeno btn--fantasma btn-editar";
+    botaoEditar.textContent = "Editar";
+    const botaoExcluir = document.createElement("button");
+    botaoExcluir.className = "btn btn--pequeno btn--perigo btn-excluir";
+    botaoExcluir.textContent = "Excluir";
+    acoes.append(botaoEditar, botaoExcluir);
+    card.append(topo, cliente, acoes);
+    return card;
 }
 // Para cada chamado dentro de chamados, colocar esse HTML.
 export function renderizarChamados(listaDeChamados) {
@@ -33,10 +52,10 @@ export function renderizarChamados(listaDeChamados) {
     if (listaDeChamados.length !== 0) {
         container.hidden = false;
         msgVazio.hidden = true;
-        container.innerHTML = listaDeChamados.map(criarCardChamado).join("");
+        container.replaceChildren(...listaDeChamados.map(criarCardChamado));
     }
     else {
-        container.innerHTML = "";
+        container.replaceChildren();
         msgVazio.hidden = false;
         container.hidden = true;
     }
