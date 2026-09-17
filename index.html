@@ -12,14 +12,6 @@
   <header class="topo">
     <div class="container topo__inner">
       <h1 class="topo__logo">Sistema de Chamados</h1>
-
-      <nav class="menu" aria-label="Navegação principal">
-        <button class="menu__aba ativa" data-view="chamados">Chamados</button>
-        <button class="menu__aba" data-view="clientes">Clientes</button>
-        <button class="menu__aba" data-view="funcionarios">Funcionários</button>
-        <button class="menu__aba" data-view="dashboard">Dashboard</button>
-      </nav>
-
       <button id="btn-novo-chamado" class="btn btn--primario">+ Novo chamado</button>
     </div>
   </header>
@@ -106,105 +98,6 @@
           <button type="button" id="btn-cancelar-form" class="btn btn--secundario">Cancelar</button>
         </div>
       </form>
-    </section>
-
-    <!-- ===== VIEW: DETALHE DO CHAMADO ===== -->
-    <section id="view-detalhe" class="view" hidden>
-      <button id="btn-voltar-detalhe" class="btn btn--fantasma">← Voltar</button>
-
-      <article class="detalhe">
-        <header class="detalhe__cabecalho">
-          <div>
-            <h2 class="detalhe__titulo" id="detalhe-titulo">Computador não liga</h2>
-            <p class="detalhe__cliente" id="detalhe-cliente">Empresa Horizonte</p>
-          </div>
-          <div class="badges">
-            <span class="badge badge--alta" id="detalhe-prioridade">Alta</span>
-            <span class="badge badge--aberto" id="detalhe-status">Aberto</span>
-          </div>
-        </header>
-
-        <dl class="detalhe__info">
-          <div><dt>Abertura</dt><dd id="detalhe-abertura">31/07/2026</dd></div>
-          <div><dt>Prazo</dt><dd id="detalhe-prazo">05/08/2026</dd></div>
-          <div><dt>Responsável</dt><dd id="detalhe-responsavel">—</dd></div>
-        </dl>
-
-        <div class="detalhe__acoes">
-          <button class="btn btn--pequeno btn--fantasma btn-editar">Editar</button>
-          <button class="btn btn--pequeno btn--sucesso btn-concluir">Concluir</button>
-          <button class="btn btn--pequeno btn--perigo btn-excluir">Excluir</button>
-        </div>
-
-        <!-- Comentários -->
-        <section class="detalhe__secao">
-          <h3>Comentários</h3>
-          <ul id="lista-comentarios" class="comentarios">
-            <li class="comentario">
-              <p class="comentario__meta"><strong>Ana (suporte)</strong> · 31/07/2026 10:30</p>
-              <p>Fonte de alimentação com defeito. Aguardando peça de reposição.</p>
-            </li>
-            <li class="comentario">
-              <p class="comentario__meta"><strong>Cliente</strong> · 31/07/2026 09:12</p>
-              <p>O problema começou depois de uma queda de energia.</p>
-            </li>
-          </ul>
-
-          <form id="form-comentario" class="form-comentario">
-            <textarea id="campo-comentario" class="input" rows="2" placeholder="Escreva um comentário..."></textarea>
-            <button type="submit" class="btn btn--primario btn--pequeno">Comentar</button>
-          </form>
-        </section>
-
-        <!-- Histórico -->
-        <section class="detalhe__secao">
-          <h3>Histórico</h3>
-          <ul id="lista-historico" class="historico">
-            <li class="historico__item"><span class="historico__data">31/07/2026 10:30</span> Status alterado para “Em andamento”</li>
-            <li class="historico__item"><span class="historico__data">31/07/2026 09:00</span> Prioridade alterada para “Alta”</li>
-            <li class="historico__item"><span class="historico__data">31/07/2026 08:45</span> Chamado criado</li>
-          </ul>
-        </section>
-      </article>
-    </section>
-
-    <!-- ===== VIEW: DASHBOARD ===== -->
-    <section id="view-dashboard" class="view" hidden>
-      <h2 class="view__titulo">Dashboard</h2>
-
-      <div class="dashboard-cards">
-        <div class="dash-card">
-          <p class="dash-card__numero" id="dash-total">0</p>
-          <p class="dash-card__rotulo">Total de chamados</p>
-        </div>
-        <div class="dash-card dash-card--aberto">
-          <p class="dash-card__numero" id="dash-abertos">0</p>
-          <p class="dash-card__rotulo">Abertos</p>
-        </div>
-        <div class="dash-card dash-card--concluido">
-          <p class="dash-card__numero" id="dash-concluidos">0</p>
-          <p class="dash-card__rotulo">Concluídos</p>
-        </div>
-        <div class="dash-card dash-card--urgente">
-          <p class="dash-card__numero" id="dash-urgentes">0</p>
-          <p class="dash-card__rotulo">Urgentes</p>
-        </div>
-        <div class="dash-card dash-card--aguardando">
-          <p class="dash-card__numero" id="dash-aguardando">0</p>
-          <p class="dash-card__rotulo">Aguardando cliente</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== VIEWS PLACEHOLDER: CLIENTES E FUNCIONÁRIOS ===== -->
-    <section id="view-clientes" class="view" hidden>
-      <h2 class="view__titulo">Clientes</h2>
-      <p class="mensagem mensagem--vazia">Área de clientes em construção.</p>
-    </section>
-
-    <section id="view-funcionarios" class="view" hidden>
-      <h2 class="view__titulo">Funcionários</h2>
-      <p class="mensagem mensagem--vazia">Área de funcionários em construção.</p>
     </section>
 
   </main>
